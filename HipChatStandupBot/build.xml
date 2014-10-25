@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WHEN RUNNING FROM ECLIPSE, CHECK 2 THINGS:
+		1] YOU NEED TO HAVE RUN THE BUILD.XML ON THE DATA MODEL JAR FIRST (/WHENEVER YOU THEN CHANGE THE DATA MODEL)
+		2] IF YOU GET AN UNSUPPORTED CLASS VERSION ERROR FROM JAVAC THEN MOST LIKELY THE ANT IS RUNNING AGAINST A 
+		   DEFAULT JRE, YOU CAN CHANGE IT FROM "RUN AS>ANT..." 
+-->
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="hipchat_standup_bot_master" default="compile" basedir=".">
+	<property name="dir.src" value="WEB-INF/src"/>
+	<property name="dir.lib" value="WEB-INF/lib"/>
+	<property name="dir.lib_dont_bundle" value="WEB-INF/lib_dont_bundle"/>
+	<property name="dir.war" value="war"/>
+	<property name="dir.build" value="build"/>
+	<property name="dir.build.classes" value="${dir.build}/classes"/>
+	<property name="dir.build.test.classes" value="${dir.build}/test-classes"/>
+	<property name="dir.build.test.reports" value="${dir.build}/test-reports"/>
+	<property name="dir.build.war" value="${dir.build}/${dir.war}"/>
+	<property name="dir.build.jar" value="${dir.build}/${dir.jar}"/>
+	<property name="dir.dist" value="dist"/>
+	<property name="infinit.e.data_model.location" value="${workspace.root}/ikanow_infinit.e_community/core/infinit.e.data_model"/>
+	<property name="target" value="1.6"/>
+	<property name="source" value="1.6"/>
+	<property name="debuglevel" value="source,lines,vars"/>	
+	
+	<property name="manifest.name" value="com/ikanow/infinit/e"/>
+	<property name="specification.title" value="infinit.e generic app server"/>
+	<property name="specification.version" value="0.25"/>
+	<property name="specification.vendor" value="${vendor}"/>
+	<property name="implementation.title" value="com.ikanow.infinit.e"/>
+	<property name="implementation.version" value="build${build.number}"/>
+	<property name="implementation.vendor" value="${vendor}"/>
+	
+	<property name="gui.name" value="nsightapp"/>
+	<property name="dir.gui" value="${workspace.root}/ikanow-nsight"/>
+	<property name="dir.gui.dist" value="${dir.gui}/dist" />
+	<property name="dir.gui.local" value="gui" />
+	<property name="dir.gui.lib" value="${dir.gui.local}/lib" />
+	
+	
+	<property name="res.dir" value="${dir.dist}/version" />
+	
+	
+	<!-- ================================= 
+		     target: clean              
+	================================= -->
+	<target name="clean" description="Removing the all generated files.">
+		<delete dir="${dir.build}"/>
+		<delete dir="${dir.dist}"/>
+	</target>
+
+	<!-- ================================= 
+	     target: prepare             
+	================================= -->
+	<target name="prepare" depends="clean">
+		<mkdir dir="${dir.build}"/>
+		<mkdir dir="${dir.dist}"/>
+		<mkdir dir="${res.dir}"/>			
+	</target>
+	
+	<!-- ================================= 
+      target: resolve     
+      use apache ivy to pull in dependencies         
+     ================================= -->
+	<target name="resolve" depends="prepare" description="retrieve dependencies with ivy">
+		<!--
+		<ivy:configure file="ivysettings.xml" />
+		<ivy:retrieve/>
+		-->
+	</target>
+	
+	<!-- ================================= 
+	  target: compile  
+	  compile the source code using javac            
+	================================= -->
+	<target name="compile" depends="update-version-string" description="Compilation of all source code.">
+		<!--<mkdir dir="${dir.build.classes}"/>
+		<javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" srcdir="${dir.src}" destdir="${dir.build.classes}" source="${source}" target="${target}">
+			<classpath refid="infinit.e.api.classpath"/>
+		</javac>
+		<copy todir="${dir.build.classes}/com/ikanow/infinit/e/application/assets">
+			<fileset dir="${dir.src}/com/ikanow/infinit/e/application/assets" />
+		</copy>-->
+	</target>
+	
+	<!-- =================================
+				target: compile-tests
+	==================================-->
+	
+	<!-- =================================
+			target: test
+	==================================-->	
+	
+	<!-- =================================
+				target: update version string
+		==================================-->	
+	
+	<target name="-timestamp" depends="resolve">
+	        <tstamp>
+	                <format property="timestamp" pattern="yyyy-MM-dd'T'HH:mm'Z'"/>
+	                <format property="build.date" pattern="yyyy-MM-dd"/>
+	        </tstamp>
+	</target>
+	
+	<!-- this target is only run if the 'version' property is undefined -->
+	<target name="update-version-string" depends="-timestamp" unless="version">
+	        <!-- get a new version string using git describe if possible -->
+	        <echo message="Updating version string..."/>
+	        <exec executable="git" outputproperty="version"
+	                failifexecutionfails="false">
+	                <arg value="describe"/>
+	        </exec>
+	        <antcall target="-store-version-string"/>
+	        <!-- ensure version is defined even if git was not available -->
+	        <property file="${res.dir}/Version.properties"/>
+	</target>
+	
+	<target name="-store-version-string" depends="-timestamp" if="version">
+	        <!-- store the new  version string in the correct property file -->
+	        <echo message="version=${version}"/>
+	        <propertyfile file="${res.dir}/Version.properties">
+	                <entry key="version" value="${version}"/>
+	                <entry key="timestamp" value="${timestamp}"/>
+	                <entry key="build.date" value="${build.date}"/>
+	        </propertyfile>
+	        <exec executable="git">
+	                <arg value="update-index"/>
+	                <arg value="--assume-unchanged"/>
+	                <arg value="${res.dir}/Version.properties"/>
+	        </exec>
+	</target>
+	
+</project>
