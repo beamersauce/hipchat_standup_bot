@@ -18,13 +18,13 @@ public class Test
 				System.out.println("Attempting to startup bot");
 				runBot();
 				System.out.println("Bot stopped cleanly, this shouldn't happen, sleeping for 5 min");
-				Thread.sleep(1000*60*5);
+				Thread.sleep(1000*30*1);
 			}
 			catch (SocketTimeoutException ex)
 			{
 				//probably a internet disconnect, try again in 5min
 				System.out.println("Threw a Socket Timeout Exception, internet probably down, sleeping for 5 min");
-				Thread.sleep(1000*60*5);
+				Thread.sleep(1000*30*1);
 			}
 			catch (Exception ex)
 			{
@@ -42,18 +42,31 @@ public class Test
 	{
 		bot_thread = new Thread()
 		{
+			HippyJava hj;
 			@Override
 			public void run()
 			{
-				HippyJava.runBot(bot);
+				try
+				{
+					hj = new HippyJava();
+					hj.runMonitorCon(bot);
+					System.out.println("done running");
+				}
+				catch (Exception ex)
+				{
+					System.out.println("hippppy threw some error");
+					ex.printStackTrace();
+				}
+				//HippyJava.runBot(bot);
 			}
 		};
 		bot_thread.start();
-		while(bot.getConnection() == null || bot.getConnection().isConnected())
+		/*while(bot.getConnection() == null || bot.getConnection().isConnected())
 		{
 			//wait 60s between connection checks
 			Thread.sleep(1000*10);
-		}
+		}*/
+		bot_thread.join();
 		throw new SocketTimeoutException("fake one");
 		/*
 		Thread t = HippyJava.runBotDesync(bot);

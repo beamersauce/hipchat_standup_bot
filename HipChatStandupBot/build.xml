@@ -5,10 +5,8 @@
 		   DEFAULT JRE, YOU CAN CHANGE IT FROM "RUN AS>ANT..." 
 -->
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="hipchat_standup_bot_master" default="compile" basedir=".">
-	<property name="dir.src" value="WEB-INF/src"/>
-	<property name="dir.lib" value="WEB-INF/lib"/>
-	<property name="dir.lib_dont_bundle" value="WEB-INF/lib_dont_bundle"/>
-	<property name="dir.war" value="war"/>
+	<property name="dir.src" value="src"/>
+	<property name="dir.lib" value="lib"/>
 	<property name="dir.build" value="build"/>
 	<property name="dir.build.classes" value="${dir.build}/classes"/>
 	<property name="dir.build.test.classes" value="${dir.build}/test-classes"/>
@@ -72,13 +70,14 @@
 	  compile the source code using javac            
 	================================= -->
 	<target name="compile" depends="update-version-string" description="Compilation of all source code.">
-		<!--<mkdir dir="${dir.build.classes}"/>
+		<mkdir dir="${dir.build.classes}"/>
 		<javac debug="true" includeantruntime="false" debuglevel="${debuglevel}" srcdir="${dir.src}" destdir="${dir.build.classes}" source="${source}" target="${target}">
-			<classpath refid="infinit.e.api.classpath"/>
+			<classpath>
+				<fileset dir="${dir.lib}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
 		</javac>
-		<copy todir="${dir.build.classes}/com/ikanow/infinit/e/application/assets">
-			<fileset dir="${dir.src}/com/ikanow/infinit/e/application/assets" />
-		</copy>-->
 	</target>
 	
 	<!-- =================================
@@ -89,6 +88,17 @@
 			target: test
 	==================================-->	
 	
+	<!-- =================================
+				target: jar
+		==================================-->	
+	<target name="jar" depends="compile" description="Generates ${ant.project.name}.jar file in to the '${dir.dist}' directory.">
+		<jar destfile="${dir.dist}/${ant.project.name}.jar" basedir="${dir.build.classes}" >
+			<zipgroupfileset dir="${dir.lib}" includes="**/*.jar" excludes=""/>
+			<manifest>
+				<attribute name="Main-Class" value="standup.Test" />
+			</manifest>
+		</jar>
+	</target>
 	<!-- =================================
 				target: update version string
 		==================================-->	

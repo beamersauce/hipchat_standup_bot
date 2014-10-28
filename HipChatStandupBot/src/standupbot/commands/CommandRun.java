@@ -33,6 +33,6 @@ public class CommandRun extends StandupCommand
 	@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
-		return "Run a standup immediately";
+		return null;
 	}
 }
