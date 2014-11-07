@@ -1,10 +1,5 @@
 package standup;
-import java.util.List;
 import java.util.TimerTask;
-
-import standupbot.util.Utils;
-
-import com.ep.hippyjava.model.HipchatUser;
 
 
 public class StandupTask extends TimerTask

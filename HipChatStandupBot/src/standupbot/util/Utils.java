@@ -14,7 +14,7 @@ public class Utils
 		{
 			if ( count > 0 )
 				sb.append(", ");
-			sb.append(user.getName() + " " );
+			sb.append(user.getName() );
 			count++;
 		}
 		return sb.toString();

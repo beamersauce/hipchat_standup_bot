@@ -1,7 +1,9 @@
 package standup;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,7 +17,8 @@ public class NextStandupTask extends TimerTask
 	Timer timeout_timer = new Timer();
 	Timer poll_timer = new Timer();
 	boolean isPoll = false;
-	private static List<Timer> timers = new ArrayList<Timer>();
+	private static List<Timer> timers = new ArrayList<Timer>();	
+	private static Map<String, Long> user_time_ran = new HashMap<String,Long>();
 	
 	public NextStandupTask(StandupBot bot, boolean isPoll)
 	{
@@ -42,12 +45,14 @@ public class NextStandupTask extends TimerTask
 			{
 				if ( bot.did_user_speak )
 				{
-					sb.append("Thanks " + getFirstName(bot.current_standup_user.getName()) + "! ");
+					sb.append("Thanks " + getFirstName(bot.current_standup_user.getName()) + "! ");					
 				}
 				else
-				{
+				{					
 					sb.append(getFirstName(bot.current_standup_user.getName()) + " must be sleepy! ");
 				}
+				Date end_time = new Date();
+				user_time_ran.put(bot.current_standup_user.getMentionName(), end_time.getTime()-bot.curr_users_start_time.getTime());
 			}
 			//reset checks
 			bot.current_standup_user = null;
@@ -79,11 +84,20 @@ public class NextStandupTask extends TimerTask
 				timeout_timer = new Timer();
 				timeout_timer.schedule(new NextStandupTask(bot, false), next_user_time);	
 				timers.add(timeout_timer);
+				
+				bot.curr_users_start_time = new Date();
 			}
 			else
 			{				
 				//all done
-				sb.append("That's everyone!");
+				sb.append("That's everyone!");				
+				sb.append("\nRuntime stats:");
+				for ( Map.Entry<String, Long> entry : user_time_ran.entrySet() )
+				{
+					double run_time = (entry.getValue())/1000.0;
+					sb.append("\n@" + entry.getKey() + ": " + run_time + "s");
+				}
+				
 				bot.sendMessage(sb.toString());
 				bot.endStandup();		
 			}

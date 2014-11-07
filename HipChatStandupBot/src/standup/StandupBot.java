@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -30,6 +29,7 @@ public class StandupBot extends HippyBot
 	private int num_spoke_out_of_turn = 0;
 	private int num_participants = 0;
 	public static boolean changing_room = false;
+	public Date curr_users_start_time = null;
 	
 	
 	//plusplus bot stuff
@@ -342,6 +342,8 @@ public class StandupBot extends HippyBot
 		while ( user_order_for_standup.size() > 0 )
 		{
 			HipchatUser next_user = user_order_for_standup.pop();
+			current_standup_user = next_user;
+			num_participants++;
 			users_called_on_in_standup.add(next_user);
 			return next_user;
 		}
