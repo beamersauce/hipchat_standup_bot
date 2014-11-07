@@ -25,6 +25,7 @@ public class BotData
 	public Set<String> speaking_trigger_words;
 	public boolean silentStart = true;
 	public LinkedList<String> turn_order;
+	public int warning_minutes = 0;
 	
 	//plusplus bot
 	public boolean enablePlusPlus = true;
@@ -42,6 +43,7 @@ public class BotData
 		plusplus_map = new HashMap<String, Long>();
 		speaking_trigger_words = new HashSet<String>();
 		speaking_trigger_words.add("today");
+		warning_minutes = 0;
 	}
 
 	public static BotData loadData()

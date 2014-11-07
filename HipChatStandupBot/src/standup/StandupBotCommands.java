@@ -18,6 +18,7 @@ import standupbot.commands.CommandTrigger;
 import standupbot.commands.CommandTurn;
 import standupbot.commands.CommandTurnOrder;
 import standupbot.commands.CommandVersion;
+import standupbot.commands.CommandWarning;
 import standupbot.commands.StandupBotCommandHelp;
 import standupbot.commands.StandupCommand;
 
@@ -109,6 +110,8 @@ public class StandupBotCommands
 	{
 		commands = new TreeMap<String, StandupCommand>();
 		//TODO figure out a way to load these up w/o this method
+		CommandWarning c13 = new CommandWarning();
+		commands.put(c13.getCommandName(), c13);
 		CommandRun c12 = new CommandRun();
 		commands.put(c12.getCommandName(), c12);
 		CommandVersion c11 = new CommandVersion();

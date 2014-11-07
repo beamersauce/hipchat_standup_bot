@@ -1,6 +1,7 @@
 package standup;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,6 +64,7 @@ public class StandupBot extends HippyBot
 	}
 	
 	private static Timer timer_standup;
+	private static Timer timer_warning;
 	
 	@Override
 	public void onLoad()
@@ -76,6 +78,7 @@ public class StandupBot extends HippyBot
 			super.joinRoom(botData.room_name);		
 			
 			timer_standup = new Timer();
+			timer_warning = new Timer();
 			//Date time_to_standup = new Date();
 			//time_to_standup.setTime(time_to_standup.getTime() + (1000*10) ); //add 10s to now
 			//timer_standup.schedule(new StandupTask(this), time_to_standup);
@@ -227,6 +230,18 @@ public class StandupBot extends HippyBot
 		timer_standup.cancel();
 		timer_standup = new Timer();
 		timer_standup.schedule(new StandupTask(this), nextRunTime);
+		handleWarningCommand();
+	}
+	
+	public void handleWarningCommand()
+	{
+		if ( botData.warning_minutes > 0 )
+		{
+			Date nextWarningTime = new Date(nextRunTime.getTime() - (botData.warning_minutes*60000));
+			timer_warning.cancel();
+			timer_warning = new Timer();
+			timer_warning.schedule(new WarningTask(this), nextWarningTime);
+		}
 	}
 	
 	private Date getNextStandupTime(boolean initial_startup)
@@ -285,22 +300,52 @@ public class StandupBot extends HippyBot
 	List<HipchatUser> remaining_users_for_standup = null;
 	List<HipchatUser> users_called_on_in_standup = null;
 	LinkedList<String> users_left_in_turn_order = null;
+	LinkedList<HipchatUser> user_order_for_standup = null;
 	
-	public void setStandupParticipants(List<HipchatUser> remaining_users)
+	public void setStandupParticipants()
 	{
+		//get the list of users in room available for standup
+		List<HipchatUser> remaining_users = getStandupUsers();		
 		users_present_at_start = remaining_users;
 		remaining_users_for_standup = new ArrayList<HipchatUser>();
 		for ( HipchatUser user : remaining_users )
 			remaining_users_for_standup.add( user );
 		users_left_in_turn_order = new LinkedList<String>();
+		user_order_for_standup = new LinkedList<HipchatUser>();
 		for ( String user_name : botData.turn_order )
-			users_left_in_turn_order.add(user_name);
+		{
+			users_left_in_turn_order.add(user_name);			
+			//find the hipchat user matching a turn order user
+			for ( HipchatUser hip_user : remaining_users_for_standup )
+			{
+				if ( hip_user.getMentionName().equals(user_name) )
+				{
+					remaining_users_for_standup.remove(hip_user);
+					user_order_for_standup.add(hip_user);
+					break;
+				}
+			}
+		}
+		
+		//randomize remaining users for standup
+		Collections.shuffle(remaining_users_for_standup);
+		user_order_for_standup.addAll(remaining_users_for_standup);
+		
+		this.sendMessage("Order for standup is: [" + Utils.listOfUsers( user_order_for_standup ) + "]");
+		
 		users_called_on_in_standup = new ArrayList<HipchatUser>();
 	}
 	
 	public HipchatUser getNextStandupUser()
 	{
 		current_standup_user = null;
+		while ( user_order_for_standup.size() > 0 )
+		{
+			HipchatUser next_user = user_order_for_standup.pop();
+			users_called_on_in_standup.add(next_user);
+			return next_user;
+		}
+		/*
 		//1. picks a user left in the turn order list
 		while ( users_left_in_turn_order.size() > 0 )
 		{
@@ -326,7 +371,7 @@ public class StandupBot extends HippyBot
 			num_participants++;
 			users_called_on_in_standup.add(current_standup_user);
 			return current_standup_user;
-		}
+		}*/
 		
 		//3. rechecks the room for late comers
 		users_late_to_standup = getStandupUsers();
@@ -356,6 +401,11 @@ public class StandupBot extends HippyBot
 		return null;
 	}
 	
+	/**
+	 * Returns all users in the room that are not offline or in the blacklist
+	 * 
+	 * @return
+	 */
 	public List<HipchatUser> getStandupUsers()
 	{
 		List<HipchatUser> remaining_users = new ArrayList<HipchatUser>();

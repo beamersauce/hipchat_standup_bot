@@ -31,10 +31,10 @@ public class StandupTask extends TimerTask
 		}
 		bot.sendMessage(sb.toString());
 		//1 get users present at start of standup and print out their names for fun
-		List<HipchatUser> remaining_users = bot.getStandupUsers();
+		/*List<HipchatUser> remaining_users = bot.getStandupUsers();
 		String users_string = Utils.listOfUsers(remaining_users);		
-		bot.sendMessage("Users present for standup are: " + users_string);
-		bot.setStandupParticipants(remaining_users);
+		bot.sendMessage("Users present for standup are: " + users_string);*/
+		bot.setStandupParticipants();
 		task = new NextStandupTask(bot, false);
 		task.run();
 		
