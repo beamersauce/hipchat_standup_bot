@@ -16,13 +16,14 @@ import com.google.gson.Gson;
 public class BotData
 {
 	public String room_name;
-	public Set<String> blacklist;
+	public Set<String> blacklist;	
 	public Set<Integer> days_to_run;
 	public int hour_to_run;
 	public int minute_to_run;
 	public int speaking_poll_secs = 2;
 	public int max_secs_between_turns = 40;
 	public Set<String> speaking_trigger_words;
+	public Set<String> speaking_early_trigger_words;
 	public boolean silentStart = true;
 	public LinkedList<String> turn_order;
 	public int warning_minutes = 0;
@@ -43,6 +44,8 @@ public class BotData
 		plusplus_map = new HashMap<String, Long>();
 		speaking_trigger_words = new HashSet<String>();
 		speaking_trigger_words.add("today");
+		speaking_early_trigger_words = new HashSet<String>();
+		speaking_early_trigger_words.add("early standup");
 		warning_minutes = 0;
 	}
 

@@ -2,6 +2,8 @@ package standupbot.util;
 
 import java.util.List;
 
+import standup.StandupBot;
+
 import com.ep.hippyjava.model.HipchatUser;
 
 public class Utils
@@ -18,5 +20,17 @@ public class Utils
 			count++;
 		}
 		return sb.toString();
+	}
+
+	public static String getUsersMentionName(String name, StandupBot bot)
+	{
+		for ( HipchatUser user : bot.getUsers() )
+		{
+			if ( user.getName().equals(name))
+			{
+				return user.getMentionName();
+			}
+		}
+		return null;
 	}
 }

@@ -3,8 +3,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,15 +24,17 @@ public class StandupBot extends HippyBot
 {
 	public HipchatUser current_standup_user = null;
 	public boolean did_user_speak = false;
+	public boolean did_user_say_anything = false;
 	public BotData botData = null;
 	public Date nextRunTime;
 	Pattern speakingTrigger = null;
+	Pattern speakingEarlyTrigger = null;
 	private int num_spoke_on_turn = 0;
 	private int num_spoke_out_of_turn = 0;
 	private int num_participants = 0;
 	public static boolean changing_room = false;
 	public Date curr_users_start_time = null;
-	
+	public Set<String> users_early_standup = new HashSet<String>();;
 	
 	//plusplus bot stuff
 	Pattern plusplus = Pattern.compile("(\\S+)\\+\\+");
@@ -70,7 +74,7 @@ public class StandupBot extends HippyBot
 	public void onLoad()
 	{
 		//get last data
-		botData = BotData.loadData();				
+		botData = BotData.loadData();						
 		
 		if (botData.room_name != null )
 		{
@@ -86,6 +90,10 @@ public class StandupBot extends HippyBot
 			if ( botData.speaking_trigger_words != null )
 			{
 				createSpeakingTriggerPattern();
+			}
+			if ( botData.speaking_early_trigger_words != null )
+			{
+				createSpeakingEarlyTriggerPattern();
 			}
 			
 			if ( !botData.silentStart )
@@ -113,6 +121,15 @@ public class StandupBot extends HippyBot
 				{				
 					handlePlusPlusBot(message, from);
 				}
+				
+				//check if it is an early standup request
+				Matcher tmatcher = speakingEarlyTrigger.matcher(message);
+				if ( tmatcher.find() )
+				{
+					String mention_name = Utils.getUsersMentionName( from, this );
+					this.users_early_standup.add(mention_name);
+					super.sendMessage(mention_name + " marked as giving standup early.");
+				}
 			}
 			
 			if ( message.startsWith("/standup") )
@@ -123,6 +140,7 @@ public class StandupBot extends HippyBot
 			}
 			else if ( current_standup_user != null && from.equals(current_standup_user.getName()))
 			{
+				did_user_say_anything = true;
 				if ( botData.speaking_trigger_words != null )
 				{
 					//check if user used trigger word
@@ -170,6 +188,32 @@ public class StandupBot extends HippyBot
 		
 		
 		speakingTrigger = Pattern.compile(sb1.toString() + "|" + sb2.toString(), Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+	}
+	
+	public void createSpeakingEarlyTriggerPattern()
+	{
+		StringBuilder sb1 = new StringBuilder();
+		StringBuilder sb2 = new StringBuilder();
+		sb1.append("^(");
+		sb2.append("(");
+		int count = 0;
+		for ( String trigger : botData.speaking_early_trigger_words )
+		{
+			if ( count > 0 )
+			{
+				sb1.append("|");
+				sb2.append("|");
+			}
+			trigger = trigger.toLowerCase();
+			sb1.append(trigger);
+			sb2.append(trigger);
+			count++;
+		}
+		sb1.append(")");
+		sb2.append(")$");
+		
+		
+		speakingEarlyTrigger = Pattern.compile(sb1.toString() + "|" + sb2.toString(), Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 	}
 	
 	private void handlePlusPlusBot(String message, String from)
@@ -404,7 +448,7 @@ public class StandupBot extends HippyBot
 	}
 	
 	/**
-	 * Returns all users in the room that are not offline or in the blacklist
+	 * Returns all users in the room that are not offline or in the blacklist or gave standup early
 	 * 
 	 * @return
 	 */
@@ -421,7 +465,8 @@ public class StandupBot extends HippyBot
 		}
 		for ( HipchatUser user : users )
 		{
-			if ( !user.getStatus().equals("offline") && !user.getName().equals(nickname()) && !botData.blacklist.contains( user.getMentionName() ) )
+			if ( !user.getStatus().equals("offline") && !user.getName().equals(nickname()) && 
+					!botData.blacklist.contains( user.getMentionName() ) && !users_early_standup.contains(user.getMentionName()) )
 			{
 				remaining_users.add(user);
 			}

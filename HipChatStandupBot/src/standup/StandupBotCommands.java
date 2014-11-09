@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import standupbot.commands.CommandBlacklist;
 import standupbot.commands.CommandDisplay;
+import standupbot.commands.CommandEarlyTrigger;
 import standupbot.commands.CommandMeeting;
 import standupbot.commands.CommandPlusPlus;
 import standupbot.commands.CommandPoll;
@@ -110,6 +111,8 @@ public class StandupBotCommands
 	{
 		commands = new TreeMap<String, StandupCommand>();
 		//TODO figure out a way to load these up w/o this method
+		CommandEarlyTrigger c14 = new CommandEarlyTrigger();
+		commands.put(c14.getCommandName(), c14);
 		CommandWarning c13 = new CommandWarning();
 		commands.put(c13.getCommandName(), c13);
 		CommandRun c12 = new CommandRun();

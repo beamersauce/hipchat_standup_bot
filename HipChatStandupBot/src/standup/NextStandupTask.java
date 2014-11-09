@@ -18,12 +18,13 @@ public class NextStandupTask extends TimerTask
 	Timer poll_timer = new Timer();
 	boolean isPoll = false;
 	private static List<Timer> timers = new ArrayList<Timer>();	
-	private static Map<String, Long> user_time_ran = new HashMap<String,Long>();
+	private Map<String, Long> user_time_ran = null;
 	
 	public NextStandupTask(StandupBot bot, boolean isPoll)
 	{
 		this.bot = bot;
 		this.isPoll = isPoll;
+		this.user_time_ran = new HashMap<String,Long>();
 	}
 
 	@Override
@@ -49,7 +50,10 @@ public class NextStandupTask extends TimerTask
 				}
 				else
 				{					
-					sb.append(getFirstName(bot.current_standup_user.getName()) + " must be sleepy! ");
+					if ( bot.did_user_say_anything )
+						sb.append(getFirstName(bot.current_standup_user.getName()) + " spoke but didn't say terminating word, burned on a technicality! ");
+					else
+						sb.append(getFirstName(bot.current_standup_user.getName()) + " must be sleepy! ");
 				}
 				Date end_time = new Date();
 				user_time_ran.put(bot.current_standup_user.getMentionName(), end_time.getTime()-bot.curr_users_start_time.getTime());
@@ -57,6 +61,7 @@ public class NextStandupTask extends TimerTask
 			//reset checks
 			bot.current_standup_user = null;
 			bot.did_user_speak = false;
+			bot.did_user_say_anything = false;
 			
 			//turn off timers always
 			cancelAllTimers();
@@ -97,7 +102,7 @@ public class NextStandupTask extends TimerTask
 					double run_time = (entry.getValue())/1000.0;
 					sb.append("\n@" + entry.getKey() + ": " + run_time + "s");
 				}
-				
+				bot.users_early_standup.clear();
 				bot.sendMessage(sb.toString());
 				bot.endStandup();		
 			}
