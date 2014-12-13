@@ -30,7 +30,7 @@ public class StandupTask extends TimerTask
 		String users_string = Utils.listOfUsers(remaining_users);		
 		bot.sendMessage("Users present for standup are: " + users_string);*/
 		bot.setStandupParticipants();
-		task = new NextStandupTask(bot, false);
+		task = new NextStandupTask(bot, false, true);
 		task.run();
 		
 	}	

@@ -18,13 +18,15 @@ public class NextStandupTask extends TimerTask
 	Timer poll_timer = new Timer();
 	boolean isPoll = false;
 	private static List<Timer> timers = new ArrayList<Timer>();	
-	private Map<String, Long> user_time_ran = null;
+	private static Map<String, Long> user_time_ran = null;
 	
-	public NextStandupTask(StandupBot bot, boolean isPoll)
+	public NextStandupTask(StandupBot bot, boolean isPoll, boolean newRun)
 	{
 		this.bot = bot;
 		this.isPoll = isPoll;
-		this.user_time_ran = new HashMap<String,Long>();
+		if ( newRun )
+			user_time_ran = new HashMap<String,Long>();
+		
 	}
 
 	@Override
@@ -80,14 +82,14 @@ public class NextStandupTask extends TimerTask
 				Date next_poll_time = new Date();
 				next_poll_time.setTime(next_poll_time.getTime() + 1000);
 				poll_timer = new Timer();				
-				poll_timer.schedule(new NextStandupTask(bot, true), next_poll_time, bot.botData.speaking_poll_secs*1000);
+				poll_timer.schedule(new NextStandupTask(bot, true, false), next_poll_time, bot.botData.speaking_poll_secs*1000);
 				timers.add(poll_timer);
 												
 				//set 20s timeout
 				Date next_user_time = new Date();
 				next_user_time.setTime(next_user_time.getTime() + (bot.botData.max_secs_between_turns*1000));
 				timeout_timer = new Timer();
-				timeout_timer.schedule(new NextStandupTask(bot, false), next_user_time);	
+				timeout_timer.schedule(new NextStandupTask(bot, false, false), next_user_time);	
 				timers.add(timeout_timer);
 				
 				bot.curr_users_start_time = new Date();
