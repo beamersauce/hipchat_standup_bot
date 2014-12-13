@@ -1,4 +1,4 @@
-package standup;
+package standupbot.data_model;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 public class BotData
 {
+	private final static String SAVE_DATA_FILENAME = "standupbot_data1.txt";
 	public String room_name;
 	public Set<String> blacklist;	
 	public Set<Integer> days_to_run;
@@ -55,7 +56,7 @@ public class BotData
 		BotData data = null;
 		try
 		{
-			FileInputStream fis = new FileInputStream("standupbot_data.txt");
+			FileInputStream fis = new FileInputStream(SAVE_DATA_FILENAME);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			Object obj = ois.readObject();
 			String json = (String)obj;
@@ -75,7 +76,7 @@ public class BotData
 	{
 		try
 		{
-			FileOutputStream fos = new FileOutputStream("standupbot_data.txt");
+			FileOutputStream fos = new FileOutputStream(SAVE_DATA_FILENAME);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			String json = new Gson().toJson(data);
 			oos.writeObject(json);

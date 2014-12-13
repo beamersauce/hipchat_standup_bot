@@ -2,8 +2,8 @@ package standupbot.commands;
 
 import java.util.List;
 
-import standup.BotData;
 import standup.StandupBot;
+import standupbot.data_model.BotData;
 
 public interface IStandupBotCommand
 {	

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import standup.BotData;
 import standup.StandupBot;
+import standupbot.data_model.BotData;
 
 public class CommandVersion extends StandupCommand
 {		

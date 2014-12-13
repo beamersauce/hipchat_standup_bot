@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import standup.BotData;
 import standup.StandupBot;
 import standup.StandupBotCommands;
+import standupbot.data_model.BotData;
 
 public class CommandDisplay extends StandupCommand
 {		

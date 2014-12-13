@@ -22,6 +22,7 @@ import standupbot.commands.CommandVersion;
 import standupbot.commands.CommandWarning;
 import standupbot.commands.StandupBotCommandHelp;
 import standupbot.commands.StandupCommand;
+import standupbot.data_model.BotData;
 
 
 public class StandupBotCommands

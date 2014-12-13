@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import standup.BotData;
 import standup.StandupBot;
+import standupbot.data_model.BotData;
 
 public class CommandMeeting extends StandupCommand
 {		

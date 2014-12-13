@@ -3,8 +3,8 @@ package standupbot.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import standup.BotData;
 import standup.StandupBot;
+import standupbot.data_model.BotData;
 
 public class CommandTrigger extends StandupCommand
 {		
