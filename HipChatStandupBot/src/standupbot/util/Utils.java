@@ -53,4 +53,9 @@ public class Utils
 		}
 		hippy_bot.joinRoom(room_name);
 	}
+
+	public static String getFirstName(String name)
+	{		
+		return name.split(" ")[0];		
+	}
 }

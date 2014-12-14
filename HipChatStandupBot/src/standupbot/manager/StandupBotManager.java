@@ -1,5 +1,6 @@
 package standupbot.manager;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,8 @@ public class StandupBotManager extends HippyBot
 	@Override
 	public void onLoad()
 	{
-		//DEBUG
+		//TODO remove this with some logic to auto join a room if we
+		//have none in data (or we fail to join all of them in master_data)		
 		Utils.joinRoom(this, "44941_bot_test");
 		
 		//TODO
@@ -35,7 +37,7 @@ public class StandupBotManager extends HippyBot
 		room_bots = new HashMap<String, RoomBot>();
 		for ( String room_name : master_data.room_names )
 		{			
-			startBot(room_name, true);
+			startBot(room_name, true, false);
 		}		
 	}
 	
@@ -130,41 +132,46 @@ public class StandupBotManager extends HippyBot
 		if ( command == null )
 			command = "";
 		command = command.toLowerCase();
-		if ( command.equals("room") && args.size() > 0 )
+		if ( command.equals("room") && args.size() > 1 )
 		{
+			String regular_summary = args.get(0);
+			boolean isSummary = regular_summary.toLowerCase().equals("summary");
 			String name = "";
-			for ( String piece : args)
-				name += piece + " ";
+			for ( int i = 1; i < args.size(); i++ )							
+				name += args.get(i) + " ";
 			name = name.substring(0, name.length()-1);
 			
 			//add a room bot to given room name or remove it if one already exists in that room
-			handleRoomRequest(name, room);							
+			handleRoomRequest(name, room, isSummary);	
+						
 		}
 		else
 		{		
 			//is just /standup sudo, display help
-			this.sendMessage("Sudo commands:\n[room] <room name> <regular|summary> - adds/removes a standup bot in that room", room);			
+			this.sendMessage("Sudo commands:\n[room] <regular|summary> <room name> - adds/removes a standup bot in that room", room);			
 		}
+		
+		//save after a valid command
+		BotDataManager.saveMasterData(master_data);
 			
 	}
 	
-	private void handleRoomRequest(String room_name, Room room)
+	private void handleRoomRequest(String room_name, Room room, boolean isSummary)
 	{		
 		String room_xmpp_name = findRoomXMPPName(room_name);
 		if ( room_xmpp_name != null )
 		{
 			//check if we currently have a bot in that room
 			if ( master_data.room_names.contains(room_xmpp_name) )
-			{
+			{				
 				//remove bot from this room
 				stopBot(room_xmpp_name);
 			}
 			else
 			{
 				//create a new bot in this room
-				startBot(room_xmpp_name, false);
-			}
-			BotDataManager.saveMasterData(master_data);
+				startBot(room_xmpp_name, false, isSummary);
+			}			
 		}
 		else
 		{
@@ -212,13 +219,16 @@ public class StandupBotManager extends HippyBot
 		return null;
 	}
 
-	private void startBot(String room_name, boolean startup)
+	private void startBot(String room_name, boolean startup, boolean isSummary)
 	{
 		System.out.println("starting bot in room: " + room_name);
-		if ( !startup )
-			master_data.room_names.add(room_name);
 		Utils.joinRoom(this, room_name);
-		BotData bot_data = BotDataManager.loadData(room_name); 
+		BotData bot_data = BotDataManager.loadData(room_name);
+		if ( !startup )
+		{
+			master_data.room_names.add(room_name);
+			bot_data.isSummary = isSummary;
+		}
 		RoomBot bot = new RoomBot(this, bot_data, room_name);
 		new Thread(bot).start();
 		room_bots.put(room_name, bot);
@@ -229,7 +239,25 @@ public class StandupBotManager extends HippyBot
 		master_data.room_names.remove(room_name);
 		RoomBot bot = room_bots.get(room_name);
 		bot.shutdown();
-		
+		//TODO leave room, doesn't seem to be a function for that currently?
+	}
+	
+	/**
+	 * Collects all the rooms summary text and returns it.
+	 * 
+	 * @return
+	 */
+	public static List<String> getSummaries()
+	{
+		List<String> summaries = new ArrayList<String>();
+		for ( RoomBot room_bot : room_bots.values() )
+		{
+			if ( !room_bot.bot_data.isSummary )
+			{
+				summaries.add(room_bot.summary);
+			}
+		}
+		return summaries;
 	}
 
 	@Override

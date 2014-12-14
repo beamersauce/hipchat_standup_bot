@@ -28,6 +28,7 @@ public class BotData
 	public boolean silentStart = true;
 	public LinkedList<String> turn_order;
 	public int warning_minutes = 0;
+	public boolean isSummary = false;
 	
 	//plusplus bot
 	public boolean enablePlusPlus = true;

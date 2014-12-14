@@ -25,6 +25,8 @@ import standupbot.command.RoomBotCommands;
 import standupbot.data_model.BotData;
 import standupbot.data_model.BotDataManager;
 import standupbot.data_model.RoomMessage;
+import standupbot.meeting.MeetingTask;
+import standupbot.meeting.SummaryTask;
 import standupbot.util.Utils;
 
 public class RoomBot implements Runnable
@@ -46,8 +48,10 @@ public class RoomBot implements Runnable
 	public boolean changing_room = false;
 	public Date curr_users_start_time = null;
 	public Set<String> users_early_standup = new HashSet<String>();
-	private static Timer timer_standup;
-	private static Timer timer_warning;
+	private Timer timer_standup;
+	private Timer timer_warning;
+	public String summary;
+	public List<String> current_standup_user_messages;
 	
 	//standup stuff
 	List<HipchatUser> users_present_at_start = null;
@@ -63,6 +67,7 @@ public class RoomBot implements Runnable
 	
 	//worker thread for silencing bot during room change
 	public final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
+	
 	
 	public RoomBot( HippyBot hippy_bot, BotData bot_data, String room_name)
 	{
@@ -145,6 +150,7 @@ public class RoomBot implements Runnable
 			}
 			else if ( current_standup_user != null && room_message.from.equals(current_standup_user.getName()))
 			{
+				current_standup_user_messages.add(room_message.message);
 				//TODO ID LIKE TO MOVE THIS STUFF OUT OF HERE?
 				//handle speaking during standup, current user
 				did_user_say_anything = true;
@@ -279,7 +285,7 @@ public class RoomBot implements Runnable
 	}
 	
 	public void scheduleStandup(boolean initial_startup, long override_next_time)
-	{
+	{		
 		num_participants = 0;
 		num_spoke_out_of_turn = 0;
 		num_spoke_on_turn = 0;
@@ -293,8 +299,15 @@ public class RoomBot implements Runnable
 		}
 		timer_standup.cancel();
 		timer_standup = new Timer();
-		timer_standup.schedule(new StandupTask(hippy_bot, this), nextRunTime);
-		handleWarningCommand();
+		if ( bot_data.isSummary )
+		{
+			timer_standup.schedule(new SummaryTask(hippy_bot, this), nextRunTime);
+		}
+		else
+		{
+			timer_standup.schedule(new MeetingTask(hippy_bot, this), nextRunTime);
+			handleWarningCommand();
+		}		
 	}
 	
 	private Date getNextStandupTime(boolean initial_startup)
@@ -423,6 +436,7 @@ public class RoomBot implements Runnable
 	public HipchatUser getNextStandupUser()
 	{
 		current_standup_user = null;
+		current_standup_user_messages = new ArrayList<String>();
 		while ( user_order_for_standup.size() > 0 )
 		{
 			HipchatUser next_user = user_order_for_standup.pop();

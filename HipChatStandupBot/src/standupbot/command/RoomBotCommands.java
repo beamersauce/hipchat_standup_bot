@@ -9,11 +9,20 @@ import java.util.Map.Entry;
 import com.ep.hippyjava.bot.HippyBot;
 
 import standupbot.bot.RoomBot;
+import standupbot.command.implementations.CommandBlacklist;
 import standupbot.command.implementations.CommandDisplay;
+import standupbot.command.implementations.CommandEarlyTrigger;
 import standupbot.command.implementations.CommandMeeting;
 import standupbot.command.implementations.CommandPlusPlus;
+import standupbot.command.implementations.CommandRun;
+import standupbot.command.implementations.CommandSilentStart;
+import standupbot.command.implementations.CommandTrigger;
 import standupbot.command.implementations.CommandTurn;
+import standupbot.command.implementations.CommandTurnOrder;
+import standupbot.command.implementations.CommandVersion;
+import standupbot.command.implementations.CommandWarning;
 import standupbot.data_model.BotData;
+import standupbot.data_model.BotDataManager;
 
 
 public class RoomBotCommands
@@ -74,7 +83,8 @@ public class RoomBotCommands
 		}
 		
 		//save data back in case file changed
-		BotData.saveData(botData);		
+		BotDataManager.saveData(room_bot.current_room.getXMPPName(), botData);
+		//BotData.saveData(botData);		
 	}
 
 	private static void handleHelp(HippyBot hippy_bot, RoomBot room_bot) throws InstantiationException, IllegalAccessException
@@ -101,6 +111,9 @@ public class RoomBotCommands
 	
 	private static void init()
 	{
+		//TODO figure out a way to load these up w/o this method??
+		//TODO maybe have a second list for master (sudo) commands?
+		
 		commands = new TreeMap<String, BotCommand>();
 		CommandPlusPlus c4 = new CommandPlusPlus();
 		commands.put(c4.getCommandName(), c4);
@@ -110,8 +123,8 @@ public class RoomBotCommands
 		commands.put(c2.getCommandName(), c2);
 		CommandTurn c8 = new CommandTurn();
 		commands.put(c8.getCommandName(), c8);
-		//TODO figure out a way to load these up w/o this method
-		/*CommandEarlyTrigger c14 = new CommandEarlyTrigger();
+		
+		CommandEarlyTrigger c14 = new CommandEarlyTrigger();
 		commands.put(c14.getCommandName(), c14);
 		CommandWarning c13 = new CommandWarning();
 		commands.put(c13.getCommandName(), c13);
@@ -119,23 +132,15 @@ public class RoomBotCommands
 		commands.put(c12.getCommandName(), c12);
 		CommandVersion c11 = new CommandVersion();
 		commands.put(c11.getCommandName(), c11);
-		CommandSilence c0 = new CommandSilence();
-		commands.put(c0.getCommandName(), c0);
 		CommandBlacklist c1 = new CommandBlacklist();
 		commands.put(c1.getCommandName(), c1);
-		CommandPlusPlus c4 = new CommandPlusPlus();
-		commands.put(c4.getCommandName(), c4);
-		CommandPoll c5 = new CommandPoll();
-		commands.put(c5.getCommandName(), c5);
-		CommandRoom c6 = new CommandRoom();
-		commands.put(c6.getCommandName(), c6);
 		CommandTrigger c7 = new CommandTrigger();
 		commands.put(c7.getCommandName(), c7);
 		
 		CommandTurnOrder c9 = new CommandTurnOrder();
 		commands.put(c9.getCommandName(), c9);
 		CommandSilentStart c10 = new CommandSilentStart();
-		commands.put(c10.getCommandName(), c10);*/
+		commands.put(c10.getCommandName(), c10);
 		
 	}
 }
