@@ -13,6 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import standupbot.data_model.BotData;
 import standupbot.util.Utils;
 
 import com.ep.hippyjava.bot.HippyBot;
@@ -34,7 +35,7 @@ public class StandupBot extends HippyBot
 	private int num_participants = 0;
 	public static boolean changing_room = false;
 	public Date curr_users_start_time = null;
-	public Set<String> users_early_standup = new HashSet<String>();;
+	public Set<String> users_early_standup = new HashSet<String>();
 	
 	//plusplus bot stuff
 	Pattern plusplus = Pattern.compile("(\\S+)\\+\\+");
