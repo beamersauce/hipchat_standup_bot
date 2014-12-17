@@ -131,8 +131,7 @@ public class MeetingTask extends TimerTask
 	private void createSummary()
 	{
 		StringBuilder summary_yesterday = new StringBuilder();
-		StringBuilder summary_today = new StringBuilder();
-		user_messages.add("yesterday some beef tacos today say what what");
+		StringBuilder summary_today = new StringBuilder();		
 		for ( String user_message : user_messages )
 		{
 			if ( !user_message.isEmpty() )

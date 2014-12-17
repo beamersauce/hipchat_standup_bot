@@ -16,6 +16,7 @@ import standupbot.command.implementations.CommandMeeting;
 import standupbot.command.implementations.CommandPlusPlus;
 import standupbot.command.implementations.CommandRun;
 import standupbot.command.implementations.CommandSilentStart;
+import standupbot.command.implementations.CommandSummary;
 import standupbot.command.implementations.CommandTrigger;
 import standupbot.command.implementations.CommandTurn;
 import standupbot.command.implementations.CommandTurnOrder;
@@ -115,6 +116,8 @@ public class RoomBotCommands
 		//TODO maybe have a second list for master (sudo) commands?
 		
 		commands = new TreeMap<String, BotCommand>();
+		CommandSummary c15 = new CommandSummary();
+		commands.put(c15.getCommandName(), c15);
 		CommandPlusPlus c4 = new CommandPlusPlus();
 		commands.put(c4.getCommandName(), c4);
 		CommandMeeting c3 = new CommandMeeting();

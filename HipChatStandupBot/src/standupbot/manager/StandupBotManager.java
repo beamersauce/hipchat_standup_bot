@@ -48,7 +48,7 @@ public class StandupBotManager extends HippyBot
 		//TODO
 		//1. parse message to see if we need to deal with it
 		//2. if not send to room, let room deal with it
-		System.out.println("message: " + message + " from: " + from + " room: " + room.getXMPPName());
+		//System.out.println("message: " + message + " from: " + from + " room: " + room.getXMPPName());
 		//ignore messages from ourself
 		if ( !from.equals(this.nickname()) )
 		{
@@ -72,7 +72,7 @@ public class StandupBotManager extends HippyBot
 		else
 		{
 			//DEBUG remove this
-			System.out.println("no room bot for room: " + room_message.room.getXMPPName());
+			//System.out.println("no room bot for room: " + room_message.room.getXMPPName());
 		}
 	}
 

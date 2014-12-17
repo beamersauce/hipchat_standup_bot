@@ -116,7 +116,7 @@ public class RoomBot implements Runnable
 				//need the extra check here, because bot will stay in room until another message is sent after shutdown call
 				if ( !stopRequested ) 
 				{
-					System.out.println("room: [" + current_room.getTrueName() + "] received message: " + room_message.message);
+					//System.out.println("room: [" + current_room.getTrueName() + "] received message: " + room_message.message);
 					handleMessage(room_message);
 				}
 			}
@@ -325,7 +325,9 @@ public class RoomBot implements Runnable
 			cal.set(Calendar.AM_PM, Calendar.AM);
 		}
 		cal.set(Calendar.MINUTE, bot_data.minute_to_run);
-		if ( cal.getTime().getTime() < new Date().getTime() )
+		//add a minute to current time so we only hold standup once a day (otherwise you can 
+		//start/finish at 9:30 and it will try to schedule again the same day
+		if ( cal.getTime().getTime() < (new Date().getTime()+60000) )
 		{
 			//add a day, we are past todays standup time
 			cal.add(Calendar.DATE, 1);
@@ -465,7 +467,7 @@ public class RoomBot implements Runnable
 		if ( users_late_to_standup.size() > 0 )
 		{
 			hippy_bot.sendMessage("Tisk Tisk, these users were late to standup: " + Utils.listOfUsers(users_late_to_standup), current_room);
-			remaining_users_for_standup.addAll(users_late_to_standup);
+			user_order_for_standup.addAll(users_late_to_standup);
 			users_late_to_standup.clear();
 			return getNextStandupUser();
 		}
