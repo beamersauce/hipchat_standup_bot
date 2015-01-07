@@ -1,8 +1,6 @@
 package standupbot.meeting;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
@@ -17,7 +15,7 @@ public class MeetingTask extends TimerTask
 	private RoomBot room_bot = null;
 	private HippyBot hippy_bot = null;
 	private Map<String, Long> user_time_ran = null;
-	private List<String> user_messages = null;
+	private Map<String, String> user_messages = null;
 	
 	public MeetingTask(HippyBot hippy_bot, RoomBot room_bot)
 	{
@@ -50,7 +48,7 @@ public class MeetingTask extends TimerTask
 	 */
 	private void processAllParticipants()
 	{
-		user_messages = new ArrayList<String>();
+		user_messages = new HashMap<String,String>();
 		//reset checks
 		room_bot.current_standup_user = null;
 		room_bot.did_user_speak = false;
@@ -99,7 +97,7 @@ public class MeetingTask extends TimerTask
 			StringBuilder builder = new StringBuilder();
 			for ( String s : room_bot.current_standup_user_messages)
 				builder.append(s).append(" ");
-			user_messages.add(builder.toString());
+			user_messages.put(room_bot.current_standup_user.getMentionName(), builder.toString());			
 			
 			//reset checks
 			room_bot.current_standup_user = null;
@@ -121,26 +119,41 @@ public class MeetingTask extends TimerTask
 		
 		//handle user messages for summary
 		createSummary();
-		hippy_bot.sendMessage("SUMMARY: " + room_bot.summary, room_bot.current_room);
+		hippy_bot.sendMessage("/quote SUMMARY:\n" + room_bot.summary, room_bot.current_room);
 	}
 
 	/**
 	 * Try to take a response and split it on yesterday/today, combine everyones responses
+	 * Format:
+	 * [ROOM NAME]
+	 *  {yesterday}
+	 *   [USERNAME1] message
+	 *   [USERNAME2] message
+	 *  {today}
+	 *  [USERNAME1] message
+	 *  [USERNAME2] message
 	 * 
 	 */
 	private void createSummary()
 	{
+		StringBuilder summary = new StringBuilder();
+		summary.append("[").append(room_bot.current_room.getTrueName()).append("]\n");				
 		StringBuilder summary_yesterday = new StringBuilder();
-		StringBuilder summary_today = new StringBuilder();		
-		for ( String user_message : user_messages )
+		summary_yesterday.append(" {yesterday}\n");
+		StringBuilder summary_today = new StringBuilder();
+		summary_today.append(" {today}\n");
+		//split all user messages into yesterday/today
+		for ( Map.Entry<String, String> entry : user_messages.entrySet())		
 		{
-			if ( !user_message.isEmpty() )
+			summary_yesterday.append("  [").append(entry.getKey()).append("] ");
+			summary_today.append("  [").append(entry.getKey()).append("] ");
+			if ( !entry.getValue().isEmpty() )
 			{
 				//hard coding this to look for "today" to split on
 				//maybe some time in the future we can use something more intelligent
 				//TODO test if new lines come through, can remove them if so
 				//(?i) means case insensitive
-				String[] splits = user_message.replaceAll("\r|\n", "").split("(?i)today");
+				String[] splits = entry.getValue().replaceAll("\r|\n", "").split("(?i)today");
 				//assume splits[0] is yesterday, everything else is today, replace first instance of yesterday 
 				String yesterday = splits[0].replaceFirst("(?i)yesterday", "").trim();
 				StringBuilder today = new StringBuilder();
@@ -148,11 +161,14 @@ public class MeetingTask extends TimerTask
 				{
 					today.append(splits[i] + " ");
 				}
-				summary_yesterday.append(yesterday + " || ");
-				summary_today.append(today.toString() + " || ");
+				summary_yesterday.append(yesterday);
+				summary_today.append(today.toString());
 			}
+			summary_yesterday.append("\n");
+			summary_today.append("\n");
 		}
-		room_bot.summary = "[" + room_bot.current_room.getTrueName() + "]\nyesterday: " + summary_yesterday.toString() + "\ntoday: " + summary_today;
+		summary.append(summary_yesterday.toString()).append(summary_today.toString());
+		room_bot.summary = summary.toString();
 	}
 	
 }
