@@ -32,7 +32,7 @@ public class CommandEarlyTrigger extends BotCommand
 			{
 				//try to remove user
 				String name = word.substring(1);
-				if ( room_bot.users_early_standup.contains(name))
+				if ( room_bot.users_early_standup.containsKey(name))
 				{
 					room_bot.users_early_standup.remove(name);
 					hippy_bot.sendMessage("Removed user: " + word + " from early standup", room_bot.current_room);

@@ -23,7 +23,7 @@ public class SummaryTask extends TimerTask
 	{
 		//run a standup
 		StringBuilder sb = new StringBuilder();
-		sb.append("@all Time for summary standup!");
+		sb.append("/quote @all Time for summary standup!");
 		List<String> summaries = StandupBotManager.getSummaries();
 		for ( String summary : summaries )
 		{

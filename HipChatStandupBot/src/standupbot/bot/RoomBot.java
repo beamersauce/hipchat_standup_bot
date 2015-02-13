@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
@@ -47,7 +47,8 @@ public class RoomBot implements Runnable
 	private int num_participants = 0;
 	public boolean changing_room = false;
 	public Date curr_users_start_time = null;
-	public Set<String> users_early_standup = new HashSet<String>();
+	//public Set<String> users_early_standup = new HashSet<String>();
+	public Map<String, String> users_early_standup = new HashMap<String, String>();
 	private Timer timer_standup;
 	private Timer timer_warning;
 	public String summary;
@@ -167,8 +168,7 @@ public class RoomBot implements Runnable
 						}
 						//super.sendMessage(from + " spoke on his turn");
 					}
-				}
-				
+				}				
 			}
 			else if ( current_standup_user != null )
 			{
@@ -227,7 +227,8 @@ public class RoomBot implements Runnable
 		if ( tmatcher.find() )
 		{
 			String mention_name = Utils.getUsersMentionName( room_message.from, hippy_bot );
-			this.users_early_standup.add(mention_name);
+			//this.users_early_standup.add(mention_name);
+			this.users_early_standup.put(mention_name, room_message.message);
 			hippy_bot.sendMessage(mention_name + " marked as giving standup early.", current_room);
 		}	
 	}
@@ -411,7 +412,7 @@ public class RoomBot implements Runnable
 		for ( HipchatUser user : users )
 		{
 			if ( !user.getStatus().equals("offline") && !user.getName().equals(hippy_bot.nickname()) && 
-					!bot_data.blacklist.contains( user.getMentionName() ) && !users_early_standup.contains(user.getMentionName()) )
+					!bot_data.blacklist.contains( user.getMentionName() ) && !users_early_standup.keySet().contains(user.getMentionName()) )
 			{
 				remaining_users.add(user);
 			}

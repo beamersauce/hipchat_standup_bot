@@ -27,6 +27,7 @@ public class CommandDisplay extends BotCommand
 			List<String> args, BotData botData)
 	{
 		StringBuilder sb = new StringBuilder();
+		sb.append("/quote ");
 		sb.append("Next Standup will occur at: " + room_bot.nextRunTime.toString());
 		for ( Entry<String, BotCommand> command : RoomBotCommands.commands.entrySet())
 		{
