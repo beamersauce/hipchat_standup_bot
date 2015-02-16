@@ -10,7 +10,7 @@ public class CommandPoll extends StandupCommand
 {		
 	private static String commandName = "poll";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		if ( args.size() > 0 )
@@ -34,7 +34,7 @@ public class CommandPoll extends StandupCommand
 		}		
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -42,13 +42,13 @@ public class CommandPoll extends StandupCommand
 		return new StandupBotCommandHelp(help_commands, "time between checks if a user has given their standup");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return "Seconds between checks if a user has spoke: " + botData.speaking_poll_secs;

@@ -9,7 +9,7 @@ public class ChangingRoomRunnable implements Runnable
 		this.bot = roomBot;
 	}
 
-	@Override
+	//@Override
 	public void run()
 	{
 		if ( bot != null )

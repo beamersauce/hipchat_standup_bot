@@ -10,7 +10,7 @@ public class CommandSilentStart extends StandupCommand
 {		
 	private static String commandName = "silentstart";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		botData.silentStart = !botData.silentStart;
@@ -20,20 +20,20 @@ public class CommandSilentStart extends StandupCommand
 			bot.sendMessage("Disabled silent start");
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
 		return new StandupBotCommandHelp(help_commands, "turns on/off startup text when bot first turns on");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return "SilentStart enabled: " + botData.silentStart;

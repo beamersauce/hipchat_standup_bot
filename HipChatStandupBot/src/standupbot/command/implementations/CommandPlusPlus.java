@@ -14,13 +14,13 @@ public class CommandPlusPlus extends BotCommand
 {		
 	private static String commandName = "plusplus";
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public void handleCommand(HippyBot hippy_bot, RoomBot room_bot,
 			List<String> args, BotData botData)
 	{
@@ -32,14 +32,14 @@ public class CommandPlusPlus extends BotCommand
 			hippy_bot.sendMessage("PlusPlus Bot is now toggled off", room_bot.current_room);	
 	}
 
-	@Override
+	//@Override
 	public BotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
 		return new BotCommandHelp(help_commands, "turns on or off plusplus bot");
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(HippyBot hippy_bot, RoomBot room_bot,
 			BotData botData)
 	{

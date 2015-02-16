@@ -14,13 +14,13 @@ public class CommandBlacklist extends BotCommand
 {		
 	private static String commandName = "blacklist";
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public void handleCommand(HippyBot hippy_bot, RoomBot room_bot,
 			List<String> args, BotData botData)
 	{
@@ -52,7 +52,7 @@ public class CommandBlacklist extends BotCommand
 		}	
 	}
 
-	@Override
+	//@Override
 	public BotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -60,7 +60,7 @@ public class CommandBlacklist extends BotCommand
 		return new BotCommandHelp(help_commands, "prevent this user from being called on during standup");
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(HippyBot hippy_bot, RoomBot room_bot,
 			BotData botData)
 	{

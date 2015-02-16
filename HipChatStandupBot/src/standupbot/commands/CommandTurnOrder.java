@@ -10,7 +10,7 @@ public class CommandTurnOrder extends StandupCommand
 {		
 	private static String commandName = "turn_order";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		if ( args.size() > 1 )
@@ -59,7 +59,7 @@ public class CommandTurnOrder extends StandupCommand
 		}		
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -68,13 +68,13 @@ public class CommandTurnOrder extends StandupCommand
 		return new StandupBotCommandHelp(help_commands, "adds a user to a specific turn order if they are online");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return "Turn Order: " + botData.turn_order.toString();

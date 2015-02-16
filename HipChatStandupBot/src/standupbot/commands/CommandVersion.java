@@ -13,26 +13,26 @@ public class CommandVersion extends StandupCommand
 {		
 	private static String commandName = "version";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		bot.sendMessage(getDisplayMessage(bot, botData));			
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
 		return new StandupBotCommandHelp(help_commands, "displays version number");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		String version = readVersionNumber();

@@ -11,7 +11,7 @@ public class CommandRoom extends StandupCommand
 {		
 	private static String commandName = "room";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		if ( args.size() > 0 )
@@ -30,7 +30,7 @@ public class CommandRoom extends StandupCommand
 				BotData.saveData(botData);
 				Runnable task = new Runnable()
 				{
-					@Override
+					//@Override
 					public void run()
 					{
 						StandupBot.changing_room = false;
@@ -49,7 +49,7 @@ public class CommandRoom extends StandupCommand
 		}	
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -57,13 +57,13 @@ public class CommandRoom extends StandupCommand
 		return new StandupBotCommandHelp(help_commands, "set the room to run standup in");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return null;

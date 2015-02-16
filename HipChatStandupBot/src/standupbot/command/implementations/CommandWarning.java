@@ -14,13 +14,13 @@ public class CommandWarning extends BotCommand
 {		
 	private static String commandName = "warning";
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public void handleCommand(HippyBot hippy_bot, RoomBot room_bot,
 			List<String> args, BotData botData)
 	{
@@ -49,7 +49,7 @@ public class CommandWarning extends BotCommand
 		}
 	}
 
-	@Override
+	//@Override
 	public BotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -57,7 +57,7 @@ public class CommandWarning extends BotCommand
 		return new BotCommandHelp(help_commands, "set how many minutes ahead of standup you'd like a warning, set to 0 for no warning");
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(HippyBot hippy_bot, RoomBot room_bot,
 			BotData botData)
 	{

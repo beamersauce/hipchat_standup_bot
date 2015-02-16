@@ -10,7 +10,7 @@ public class CommandPlusPlus extends StandupCommand
 {		
 	private static String commandName = "plusplus";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		botData.enablePlusPlus = !botData.enablePlusPlus;
@@ -21,20 +21,20 @@ public class CommandPlusPlus extends StandupCommand
 			bot.sendMessage("PlusPlus Bot is now toggled off");	
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
 		return new StandupBotCommandHelp(help_commands, "turns on or off plusplus bot");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return "PlusPlusBot on: " + botData.enablePlusPlus;

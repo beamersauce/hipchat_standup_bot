@@ -10,7 +10,7 @@ public class CommandBlacklist extends StandupCommand
 {		
 	private static String commandName = "blacklist";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		if ( args.size() > 0 )
@@ -41,7 +41,7 @@ public class CommandBlacklist extends StandupCommand
 		}		
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -49,13 +49,13 @@ public class CommandBlacklist extends StandupCommand
 		return new StandupBotCommandHelp(help_commands, "prevent this user from being called on during standup");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return "Blacklist Users: " + botData.blacklist.toString();

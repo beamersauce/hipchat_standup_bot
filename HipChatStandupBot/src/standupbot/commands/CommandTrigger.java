@@ -10,7 +10,7 @@ public class CommandTrigger extends StandupCommand
 {		
 	private static String commandName = "trigger";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		if ( args.size() > 0 )
@@ -34,7 +34,7 @@ public class CommandTrigger extends StandupCommand
 		}			
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -42,13 +42,13 @@ public class CommandTrigger extends StandupCommand
 		return new StandupBotCommandHelp(help_commands, "set words to end your turn, can be at the begginning or end of a line (e.g. 'today')");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return "Turn trigger words: " + botData.speaking_trigger_words.toString();

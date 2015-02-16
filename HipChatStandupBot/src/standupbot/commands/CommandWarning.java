@@ -10,7 +10,7 @@ public class CommandWarning extends StandupCommand
 {		
 	private static String commandName = "warning";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		if ( args.size() > 0 )
@@ -38,7 +38,7 @@ public class CommandWarning extends StandupCommand
 		}		
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -46,13 +46,13 @@ public class CommandWarning extends StandupCommand
 		return new StandupBotCommandHelp(help_commands, "set how many minutes ahead of standup you'd like a warning, set to 0 for no warning");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		if ( botData.warning_minutes > 0 )

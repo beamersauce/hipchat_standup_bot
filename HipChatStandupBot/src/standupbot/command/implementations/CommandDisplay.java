@@ -16,13 +16,13 @@ public class CommandDisplay extends BotCommand
 {		
 	private static String commandName = "display";
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public void handleCommand(HippyBot hippy_bot, RoomBot room_bot,
 			List<String> args, BotData botData)
 	{
@@ -38,14 +38,14 @@ public class CommandDisplay extends BotCommand
 		hippy_bot.sendMessage(sb.toString(), room_bot.current_room);
 	}
 
-	@Override
+	//@Override
 	public BotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
 		return new BotCommandHelp(help_commands, "shows information about the StandupBot's current settings");
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(HippyBot hippy_bot, RoomBot room_bot,
 			BotData botData)
 	{

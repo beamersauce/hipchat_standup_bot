@@ -12,7 +12,7 @@ public class CommandDisplay extends StandupCommand
 {		
 	private static String commandName = "display";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		StringBuilder sb = new StringBuilder();
@@ -26,20 +26,20 @@ public class CommandDisplay extends StandupCommand
 		bot.sendMessage(sb.toString());
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
 		return new StandupBotCommandHelp(help_commands, "shows information about the StandupBot's current settings");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return null;

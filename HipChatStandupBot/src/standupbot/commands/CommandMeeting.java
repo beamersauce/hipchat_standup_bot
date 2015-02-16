@@ -11,7 +11,7 @@ public class CommandMeeting extends StandupCommand
 {		
 	private static String commandName = "meeting";
 	
-	@Override
+	//@Override
 	public void handleCommand(StandupBot bot, List<String> args, BotData botData)
 	{
 		if ( args.size() > 2 )
@@ -65,7 +65,7 @@ public class CommandMeeting extends StandupCommand
 		}		
 	}
 
-	@Override
+	//@Override
 	public StandupBotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -75,13 +75,13 @@ public class CommandMeeting extends StandupCommand
 		return new StandupBotCommandHelp(help_commands, "set time of day to conduct standup meeting, for days put 0123456 corresponding to day of week you want, 0 is sunday");
 	}
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(StandupBot bot, BotData botData)
 	{
 		return "Standup runs at: " + getDaysString(botData.days_to_run) + " at " + botData.hour_to_run + ":" + botData.minute_to_run;

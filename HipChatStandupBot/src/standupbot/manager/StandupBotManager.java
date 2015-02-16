@@ -21,7 +21,7 @@ public class StandupBotManager extends HippyBot
 	private static MasterData master_data;
 	private static Map<String, RoomBot> room_bots;
 	
-	@Override
+	//@Override
 	public void onLoad()
 	{
 		//TODO remove this with some logic to auto join a room if we
@@ -41,7 +41,7 @@ public class StandupBotManager extends HippyBot
 		}		
 	}
 	
-	@Override
+	//@Override
 	public void receiveMessage(String message, String from, Room room)
 	{
 		//parse the message to see if we need to handle it, if not send off to appropriate room
@@ -260,25 +260,25 @@ public class StandupBotManager extends HippyBot
 		return summaries;
 	}
 
-	@Override
+	//@Override
 	public String nickname()
 	{
 		return "Standup Bot";
 	}
 	
-	@Override
+	//@Override
 	public String password()
 	{		
 		return "123qwe";
 	}
 	
-	@Override
+	//@Override
 	public String username()
 	{		
 		return "44941_1021361@chat.hipchat.com";
 	}
 
-	@Override
+	//@Override
 	public String apiKey()
 	{		
 		return "8e42d322e59c7e66229ba5cda30be1";

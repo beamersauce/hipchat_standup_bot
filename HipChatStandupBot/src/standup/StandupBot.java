@@ -44,25 +44,25 @@ public class StandupBot extends HippyBot
 	//worker thread for silencing during room changing
 	public static final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
 	
-	@Override
+	//@Override
 	public String nickname()
 	{
 		return "Standup Bot";
 	}
 	
-	@Override
+	//@Override
 	public String password()
 	{		
 		return "123qwe";
 	}
 	
-	@Override
+	//@Override
 	public String username()
 	{		
 		return "44941_1021361@chat.hipchat.com";
 	}
 
-	@Override
+	//@Override
 	public String apiKey()
 	{		
 		return "8e42d322e59c7e66229ba5cda30be1";
@@ -71,7 +71,7 @@ public class StandupBot extends HippyBot
 	private static Timer timer_standup;
 	private static Timer timer_warning;
 	
-	@Override
+	//@Override
 	public void onLoad()
 	{
 		//get last data
@@ -110,7 +110,7 @@ public class StandupBot extends HippyBot
 		}
 	}
 
-	@Override
+	//@Override
 	public void receiveMessage(String message, String from, Room room)
 	{		
 		if ( !changing_room )

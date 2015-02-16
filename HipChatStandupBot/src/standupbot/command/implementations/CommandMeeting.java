@@ -15,7 +15,7 @@ public class CommandMeeting extends BotCommand
 {		
 	private static String commandName = "meeting";
 	
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
@@ -35,7 +35,7 @@ public class CommandMeeting extends BotCommand
 		return sb.substring(2);
 	}
 
-	@Override
+	//@Override
 	public void handleCommand(HippyBot hippy_bot, RoomBot room_bot,
 			List<String> args, BotData botData)
 	{
@@ -90,7 +90,7 @@ public class CommandMeeting extends BotCommand
 		}
 	}
 
-	@Override
+	//@Override
 	public BotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -100,7 +100,7 @@ public class CommandMeeting extends BotCommand
 		return new BotCommandHelp(help_commands, "set time of day to conduct standup meeting, for days put 0123456 corresponding to day of week you want, 0 is sunday");
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(HippyBot hippy_bot, RoomBot room_bot,
 			BotData botData)
 	{

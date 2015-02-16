@@ -106,7 +106,7 @@ public class RoomBot implements Runnable
 		worker.schedule(new ChangingRoomRunnable(this), 5, TimeUnit.SECONDS);
 	}
 	
-	@Override
+	//@Override
 	public void run()
 	{
 		while ( !stopRequested )

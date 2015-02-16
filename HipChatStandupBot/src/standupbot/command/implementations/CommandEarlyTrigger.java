@@ -14,13 +14,13 @@ public class CommandEarlyTrigger extends BotCommand
 {		
 	private static String commandName = "early_trigger";
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public void handleCommand(HippyBot hippy_bot, RoomBot room_bot,
 			List<String> args, BotData botData)
 	{
@@ -63,7 +63,7 @@ public class CommandEarlyTrigger extends BotCommand
 		}	
 	}
 
-	@Override
+	//@Override
 	public BotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -71,7 +71,7 @@ public class CommandEarlyTrigger extends BotCommand
 		return new BotCommandHelp(help_commands, "set words to give your standup early, can be at the begginning or end of a line (e.g. 'early standup ...') or will cancel a user being set for early standup by passing @username");
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(HippyBot hippy_bot, RoomBot room_bot,
 			BotData botData)
 	{

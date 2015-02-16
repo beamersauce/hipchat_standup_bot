@@ -14,13 +14,13 @@ public class CommandTurn extends BotCommand
 {		
 	private static String commandName = "turn";
 
-	@Override
+	//@Override
 	public String getCommandName()
 	{		
 		return commandName;
 	}
 
-	@Override
+	//@Override
 	public void handleCommand(HippyBot hippy_bot, RoomBot room_bot,
 			List<String> args, BotData botData)
 	{
@@ -45,7 +45,7 @@ public class CommandTurn extends BotCommand
 		}	
 	}
 
-	@Override
+	//@Override
 	public BotCommandHelp getHelpMessage()
 	{
 		List<String> help_commands = new ArrayList<String>();
@@ -53,7 +53,7 @@ public class CommandTurn extends BotCommand
 		return new BotCommandHelp(help_commands, "time between turns if a user does not respond");
 	}
 
-	@Override
+	//@Override
 	public String getDisplayMessage(HippyBot hippy_bot, RoomBot room_bot,
 			BotData botData)
 	{

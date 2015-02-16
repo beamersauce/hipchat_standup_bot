@@ -7,84 +7,84 @@ import com.ep.hippyjava.HippyJava;
 public class Test2
 {
 
-	public static void main(String[] args) throws InterruptedException
-	{
-		//HippyJava.runBot(new StandupBot());
-		boolean badError = false;
-		while ( !badError )
-		{
-			try
-			{
-				System.out.println("Attempting to startup bot");
-				runBot();
-				System.out.println("Bot stopped cleanly, this shouldn't happen, sleeping for 5 min");
-				Thread.sleep(1000*30*1);
-			}
-			catch (SocketTimeoutException ex)
-			{
-				//probably a internet disconnect, try again in 5min
-				System.out.println("Threw a Socket Timeout Exception, internet probably down, sleeping for 5 min");
-				Thread.sleep(1000*30*1);
-			}
-			catch (Exception ex)
-			{
-				System.out.println("Threw a different Exception " + ex.getStackTrace());
-				
-				badError = true;
-			}
-		}
-
-	}
-	
-	private static StandupBot bot = new StandupBot();
-	private static Thread bot_thread = null;
-	public static void runBot() throws SocketTimeoutException, InterruptedException
-	{
-		bot_thread = new Thread()
-		{
-			HippyJava hj;
-			@Override
-			public void run()
-			{
-				try
-				{
-					hj = new HippyJava();
-					hj.runMonitorCon(bot);
-					System.out.println("done running");
-				}
-				catch (Exception ex)
-				{
-					System.out.println("hippppy threw some error");
-					ex.printStackTrace();
-				}
-				//HippyJava.runBot(bot);
-			}
-		};
-		bot_thread.start();
-		/*while(bot.getConnection() == null || bot.getConnection().isConnected())
-		{
-			//wait 60s between connection checks
-			Thread.sleep(1000*10);
-		}*/
-		bot_thread.join();
-		throw new SocketTimeoutException("fake one");
-		/*
-		Thread t = HippyJava.runBotDesync(bot);
-		t.start();
-		//t.run();
-		while ( bot.getConnection() == null || bot.getConnection().isConnected() )
-		//while(true)
-		{
-			//wait 60s between connection checks
-			Thread.sleep(1000*60);
-		}*/
-		
-		/*
-		//THIS IS THE OLD WAY, NEED TO FIGURE OUT HOW TO GET AROUND THIS
-		HippyJava.runBot(new StandupBot());
-		//we popped out of while statement meaning we are no longer connected
-		throw new SocketTimeoutException("fake one");
-		*/
-	}
+//	public static void main(String[] args) throws InterruptedException
+//	{
+//		//HippyJava.runBot(new StandupBot());
+//		boolean badError = false;
+//		while ( !badError )
+//		{
+//			try
+//			{
+//				System.out.println("Attempting to startup bot");
+//				runBot();
+//				System.out.println("Bot stopped cleanly, this shouldn't happen, sleeping for 5 min");
+//				Thread.sleep(1000*30*1);
+//			}
+//			catch (SocketTimeoutException ex)
+//			{
+//				//probably a internet disconnect, try again in 5min
+//				System.out.println("Threw a Socket Timeout Exception, internet probably down, sleeping for 5 min");
+//				Thread.sleep(1000*30*1);
+//			}
+//			catch (Exception ex)
+//			{
+//				System.out.println("Threw a different Exception " + ex.getStackTrace());
+//				
+//				badError = true;
+//			}
+//		}
+//
+//	}
+//	
+//	private static StandupBot bot = new StandupBot();
+//	private static Thread bot_thread = null;
+//	public static void runBot() throws SocketTimeoutException, InterruptedException
+//	{
+//		bot_thread = new Thread()
+//		{
+//			HippyJava hj;
+//			@Override
+//			public void run()
+//			{
+//				try
+//				{
+//					hj = new HippyJava();
+//					hj.runMonitorCon(bot);
+//					System.out.println("done running");
+//				}
+//				catch (Exception ex)
+//				{
+//					System.out.println("hippppy threw some error");
+//					ex.printStackTrace();
+//				}
+//				//HippyJava.runBot(bot);
+//			}
+//		};
+//		bot_thread.start();
+//		/*while(bot.getConnection() == null || bot.getConnection().isConnected())
+//		{
+//			//wait 60s between connection checks
+//			Thread.sleep(1000*10);
+//		}*/
+//		bot_thread.join();
+//		throw new SocketTimeoutException("fake one");
+//		/*
+//		Thread t = HippyJava.runBotDesync(bot);
+//		t.start();
+//		//t.run();
+//		while ( bot.getConnection() == null || bot.getConnection().isConnected() )
+//		//while(true)
+//		{
+//			//wait 60s between connection checks
+//			Thread.sleep(1000*60);
+//		}*/
+//		
+//		/*
+//		//THIS IS THE OLD WAY, NEED TO FIGURE OUT HOW TO GET AROUND THIS
+//		HippyJava.runBot(new StandupBot());
+//		//we popped out of while statement meaning we are no longer connected
+//		throw new SocketTimeoutException("fake one");
+//		*/
+//	}
 
 }
