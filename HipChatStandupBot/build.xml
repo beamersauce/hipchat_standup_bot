@@ -95,7 +95,7 @@
 		<jar destfile="${dir.dist}/${ant.project.name}.jar" basedir="${dir.build.classes}" >
 			<zipgroupfileset dir="${dir.lib}" includes="**/*.jar" excludes=""/>
 			<manifest>
-				<attribute name="Main-Class" value="standup.Test" />
+				<attribute name="Main-Class" value="app.Run" />
 			</manifest>
 		</jar>
 	</target>
