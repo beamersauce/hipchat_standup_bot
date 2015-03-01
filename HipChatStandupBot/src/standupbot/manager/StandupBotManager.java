@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import standupbot.bot.RoomBot;
 import standupbot.data_model.BotData;
@@ -240,6 +241,15 @@ public class StandupBotManager extends HippyBot
 		RoomBot bot = room_bots.get(room_name);
 		bot.shutdown();
 		//TODO leave room, doesn't seem to be a function for that currently?
+	}
+	
+	public void shutdown()
+	{
+		//stop all bots
+		for ( Entry<String, RoomBot> entry : room_bots.entrySet() )
+		{
+			entry.getValue().shutdown();
+		}
 	}
 	
 	/**
