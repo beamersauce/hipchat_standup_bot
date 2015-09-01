@@ -63,8 +63,8 @@ public class RoomBot implements Runnable
 	LinkedList<HipchatUser> user_order_for_standup = null;
 	
 	//plusplus bot stuff
-	Pattern plusplus = Pattern.compile("(\\S+)\\+\\+");
-	Pattern minusminus = Pattern.compile("(\\S+)\\-\\-");
+	Pattern plusplus = Pattern.compile("(\\w+)\\+{2}(\\s|$)");
+	Pattern minusminus = Pattern.compile("(\\w+)\\-{2}(\\s|$)");
 	
 	//worker thread for silencing bot during room change
 	public final ScheduledExecutorService worker = Executors.newSingleThreadScheduledExecutor();
