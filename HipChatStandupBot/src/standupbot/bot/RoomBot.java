@@ -126,6 +126,7 @@ public class RoomBot implements Runnable
 				System.out.println("was interrupted, kick out");
 			}
 		}
+		hippy_bot.sendMessage("Stop requested, turning off in this room", current_room);
 		System.out.println("stop was requested, returning from run, room: " + current_room.getXMPPName());
 	}
 	

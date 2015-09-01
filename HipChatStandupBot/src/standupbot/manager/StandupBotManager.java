@@ -166,11 +166,13 @@ public class StandupBotManager extends HippyBot
 			if ( master_data.room_names.contains(room_xmpp_name) )
 			{				
 				//remove bot from this room
+				this.sendMessage("Stopping bot in room: " + room_name, room);
 				stopBot(room_xmpp_name);
 			}
 			else
 			{
 				//create a new bot in this room
+				this.sendMessage("Starting bot in room: " + room_name + " isSummary?: " + isSummary, room);
 				startBot(room_xmpp_name, false, isSummary);
 			}			
 		}

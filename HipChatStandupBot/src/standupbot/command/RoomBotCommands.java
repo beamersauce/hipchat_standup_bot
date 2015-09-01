@@ -91,7 +91,7 @@ public class RoomBotCommands
 	private static void handleHelp(HippyBot hippy_bot, RoomBot room_bot) throws InstantiationException, IllegalAccessException
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("StandupBot Help");		
+		sb.append("/quote StandupBot Help");		
 		sb.append("\nType /standup <command> <options> to issue commands");
 		for ( Entry<String, BotCommand> entry : commands.entrySet())
 		{
